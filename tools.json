@@ -411,13 +411,6 @@
       "check": "codex --version"
     },
     {
-      "name": "cs",
-      "category": "ai-cli",
-      "purpose": "Codex account switcher (codex-switch)",
-      "usage": "cs list | cs current | cs <n>",
-      "risk": "write"
-    },
-    {
       "name": "tg-backup",
       "category": "backup",
       "purpose": "Telegram Drive archive: stats, ls, search, find, duplicates, backup, status, doctor",

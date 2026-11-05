@@ -62,20 +62,22 @@ switch ($Cmd.ToLower()) {
   }
   'sync' {
     $dir = 'C:\tools'
-    $files = Get-ChildItem $dir -File | Where-Object { $_.Name -notmatch '^(_|tools\.|AGENTS|TOOLS_INDEX)' }
+    $binDir = Join-Path $dir 'bin'
+    $files = @(Get-ChildItem $dir -File | Where-Object { $_.Name -notmatch '^(_|tools\.|AGENTS|TOOLS_INDEX|README|setup)' })
+    if (Test-Path $binDir) { $files += @(Get-ChildItem $binDir -File) }
     $bare = $files | Where-Object { $_.Extension -in '.exe', '.cmd', '.ps1', '.bat' } | ForEach-Object { [IO.Path]::GetFileNameWithoutExtension($_.Name).ToLower() } | Sort-Object -Unique
     $documented = $all | ForEach-Object { $_.name.ToLower() -replace '\.ps1$', '' }
     # Families documented by one manifest entry (Antigravity helpers, start/stop scripts, internals).
-    $family = '^(agy-|antigravity|check-|clean-|ides-|start-|stop-|status-|update-|kiro|codex-|cbm-|diskmax|7zr|btm|code_check|antigravity_|tg_backup|session-manager|line-cap|d2|kondo|lazygit|everything-|md-mermaid|mermaid|9router-|session)'
-    $undocumented = @($bare | Where-Object { $documented -notcontains $_ -and $_ -notmatch $family -and $_ -notin 'tools', 'es-mini', 'rg-mini', 'fd-mini', 'sg-mini', 'ffprobe', 'pc-care', 'pc-10', 'tesseract', 'magick', 'ast-grep', 'codebase-memory-mcp', 'autorunsc', 'autorunsc64', 'cs', 'clean-all', 'ides-check', '7z', 'uvx' })
-    $missing = @($all | Where-Object { -not (Get-Command ($_.name -replace '\.ps1$', '') -ErrorAction SilentlyContinue) -and -not (Test-Path (Join-Path $dir $_.name)) } | ForEach-Object name)
-    # Git Bash cannot run .cmd files by name: each needs an extensionless launcher.
-    $cmds = Get-ChildItem $dir -Filter *.cmd -File | Where-Object { $_.Name -notmatch '^_' -and -not (Test-Path (Join-Path $dir ($_.BaseName + '.exe'))) }
-    $noLauncher = @($cmds | Where-Object { -not (Test-Path -LiteralPath (Join-Path $dir $_.BaseName)) } | ForEach-Object BaseName)   # a folder with the same name (btop, mermaid) cannot hold a launcher
+    $family = '^(agy-|antigravity|check-|clean-|claude-|ides-|start-|stop-|status-|update-|kiro|cbm-|diskmax|7zr|btm|code_check|antigravity_|tg_backup|session-manager|line-cap|d2|kondo|lazygit|everything-|md-mermaid|mermaid|9router-|session)'
+    $undocumented = @($bare | Where-Object { $documented -notcontains $_ -and $_ -notmatch $family -and $_ -notin 'tools', 'es-mini', 'rg-mini', 'fd-mini', 'sg-mini', 'ffprobe', 'pc-care', 'pc-10', 'tesseract', 'magick', 'ast-grep', 'codebase-memory-mcp', 'autorunsc', 'autorunsc64', 'clean-all', 'ides-check', '7z', 'uvx' })
+    $missing = @($all | Where-Object { -not (Get-Command ($_.name -replace '\.ps1$', '') -ErrorAction SilentlyContinue) -and -not (Test-Path (Join-Path $dir $_.name)) -and -not (Test-Path (Join-Path $binDir $_.name)) -and -not (Test-Path (Join-Path $dir "scripts\$($_.name)")) } | ForEach-Object name)
+    # Git Bash cannot run .cmd files by name: each needs an extensionless launcher in bin/.
+    $cmds = if (Test-Path $binDir) { Get-ChildItem $binDir -Filter *.cmd -File | Where-Object { $_.Name -notmatch '^_' -and -not (Test-Path (Join-Path $binDir ($_.BaseName + '.exe'))) -and -not (Test-Path (Join-Path $dir ($_.BaseName + '.exe'))) } } else { @() }
+    $noLauncher = @($cmds | Where-Object { -not (Test-Path -LiteralPath (Join-Path $binDir $_.BaseName)) } | ForEach-Object BaseName)
     if ($Fix) {
       foreach ($n in $noLauncher) {
         $body = "#!/usr/bin/env sh`n# Launcher so Git Bash can run the Windows .cmd tool by name.`nexec cmd //c `"`$(cygpath -w `"`$(dirname `"`$0`")/$n.cmd`")`" `"`$@`"`n"
-        [IO.File]::WriteAllText((Join-Path $dir $n), $body, (New-Object Text.UTF8Encoding($false)))
+        [IO.File]::WriteAllText((Join-Path $binDir $n), $body, (New-Object Text.UTF8Encoding($false)))
       }
     }
     $dupes = @()

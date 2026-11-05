@@ -24,7 +24,7 @@ A production-grade, token-efficient suite of command-line tools, system monitors
   │ clean-temp   │    │ gitleaks     │  │ fd-mini      │   │ difft / delta│   │ playwright   │
   │ wsl-compact  │    │ trivy        │  │ cbm (graph)  │   │ pandoc       │   │ skillmap     │
   │ btop         │    │ osv-scanner  │  │ ast-grep     │   │ ffmpeg       │   │ auto-accept  │
-  │ fastfetch    │    │ semgrep      │  │ tokei        │   │ magick       │   │ codex-switch │
+  │ fastfetch    │    │ semgrep      │  │ tokei        │   │ magick       │   │ kiro         │
   └──────────────┘    └──────────────┘  └──────────────┘   └──────────────┘   └──────────────┘
 ```
 
@@ -44,7 +44,7 @@ cd C:\tools
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 `setup.ps1` will:
-- Add `C:\tools` to your User `PATH` (if not already present).
+- Add `C:\tools` and `C:\tools\bin` to your User `PATH` (if not already present).
 - Automatically generate extensionless shims for Git Bash and WSL interoperability (`tools sync -Fix`).
 - Verify installed tool health and print the system status (`tools doctor`).
 
@@ -101,7 +101,8 @@ Engineered specifically for pair-programming AI agents and developers:
 ### 5. Terminal AI & Workflow Automation
 - **`9ai`**: Remote gateway CLI connecting your local terminal directly to 9Router models via encrypted Cloudflare tunnels.
 - **`agent-browser`**: Token-efficient browser automation CLI with `@ref` interactive snapshots.
-- **`codex-switch` (`cs`)**: Fast terminal account switcher for OpenAI Codex environments.
+- **`kiro`**: Multi-model proxy routing and swarm execution for Claude, DeepSeek, and Qwen models.
+- **`auto-accept`**: Autonomous permission auto-accepter for agent environments.
 
 ---
 
@@ -121,21 +122,48 @@ Every tool in the suite is tagged with an operational risk tier in `tools.json`:
 ## 📁 Repository Structure
 
 ```
-C:\tools\
-├── tools.json              # Master tool catalog & health check registry
-├── tools.ps1 / tools.cmd   # Master tools manager CLI
+tools/
+├── bin/                    # Executable CLI launchers (.cmd & Git Bash shims)
+│   ├── pc-check.cmd        # PC hardware & health diagnostic
+│   ├── clean-temp.cmd      # Safe temporary file cleaner
+│   ├── wsl-compact.cmd     # Virtual disk (WSL2/Docker) compactor
+│   ├── cbm-mini.cmd        # Low-token code graph & symbol finder
+│   ├── rg-mini.cmd         # Low-token ripgrep wrapper (<20 lines)
+│   └── ...                 # 50+ Windows & cross-platform CLI launchers
+├── docs/                   # Documentation & specifications
+│   ├── TOOLS_INDEX.md      # Full tool catalog, flags & command reference
+│   ├── AGENTS.md           # LLM agent workflows, prompt recipes & guidelines
+│   ├── code-check-README.md# Code-check multi-linter architecture
+│   └── tg-backup-README.md # Telegram Drive backup suite documentation
+├── rules/                  # Static analysis AST patterns
+│   └── ast-grep/           # Security & antipattern detection rules
+├── scripts/                # Core PowerShell automation & maintenance scripts
+│   ├── pc-care.ps1         # System maintenance & health engine
+│   ├── clean-temp.ps1      # Safe temp purger
+│   ├── wsl-compact.ps1     # Diskpart VHDX compactor
+│   ├── 9r.ps1              # 9Router management engine
+│   └── everything-doctor.ps1 # Everything IPC search index health check
+├── src/                    # Python engines & modular packages
+│   ├── antigravity/        # Antigravity session & cleaner engine
+│   ├── code_check/         # Multi-language linter orchestrator
+│   ├── diskmax/            # Disk usage & cleanup visualizer
+│   ├── tg_backup/          # Telegram cloud backup engine
+│   └── utils/              # Stream processing utilities (line-cap)
+├── vendor/                 # Bundled third-party tools & assets
+│   ├── btop/               # btop4win themes and configuration
+│   ├── imagemagick/        # ImageMagick configuration & color profiles
+│   ├── mermaid/            # Mermaid diagram renderer
+│   └── tesseract-bin/      # Tesseract OCR language datasets
+├── .gitignore              # Safe binary & secret exclusion rules
+├── README.md               # Repository documentation & guide
 ├── setup.ps1               # 1-command bootstrap & PATH configuration
-├── TOOLS_INDEX.md          # Full manual specification & syntax index
-├── AGENTS.md               # Guidelines & recipes for AI agents
-├── pc-check.ps1 / .cmd     # Hardware & OS diagnostics
-├── pc-care.ps1 / .cmd      # Automated maintenance runner
-├── clean-temp.ps1 / .cmd   # Stale temp cleaner
-├── wsl-compact.ps1 / .cmd  # Virtual disk compactor
-├── code-check*             # Unified multi-language linter suite
-└── ...                     # Cross-platform shims & wrappers
+├── tools.cmd               # Quick launcher for tools manager
+├── tools.json              # Master tool catalog & health registry
+└── tools.ps1               # Master tools CLI engine
 ```
 
 ---
 
 ## 📄 License
 MIT License. Third-party binaries managed by `setup.ps1` are subject to their respective open-source and vendor licenses.
+

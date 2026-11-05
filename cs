@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-# Launcher so Git Bash can run the Windows .cmd tool by name.
-exec cmd //c "$(cygpath -w "$(dirname "$0")/cs.cmd")" "$@"
