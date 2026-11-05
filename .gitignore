@@ -1,0 +1,40 @@
+# Binary executables, libraries, archives & installer packages
+# Use setup.ps1 to install or download verified binaries automatically
+*.exe
+*.dll
+*.sys
+*.msi
+*.zip
+*.7z
+*.tar.gz
+*.tar
+*.rar
+
+# Logs, snapshots, and personal backups
+_logs/
+_backup/
+*.log
+*.bak
+*.tmp
+*.reg
+*.csv
+
+# Python runtime & caches
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.venv/
+env/
+
+# Node / JS dependencies
+node_modules/
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

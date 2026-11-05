@@ -1,0 +1,537 @@
+{
+  "updated": "2026-10-28",
+  "note": "Machine-readable index of C:\\tools and related CLIs. risk: read = changes nothing; write = creates/edits files; destructive = deletes or changes system state; admin = needs elevation. Use `tools find <word>` or `tools show <name>`; `tools doctor` verifies every entry still runs.",
+  "tools": [
+    {
+      "name": "rg",
+      "category": "code-search",
+      "purpose": "Fast text/regex search in files (ripgrep)",
+      "usage": "rg -n \"pattern\" [dir] --glob \"*.js\"",
+      "risk": "read",
+      "check": "rg --version",
+      "tip": "rg-mini caps output at 20 lines for low token use"
+    },
+    {
+      "name": "fd",
+      "category": "code-search",
+      "purpose": "Find files by name/pattern",
+      "usage": "fd \"pattern\" [dir]",
+      "risk": "read",
+      "check": "fd --version",
+      "tip": "fd-mini caps at 20 results"
+    },
+    {
+      "name": "sg",
+      "category": "code-search",
+      "purpose": "Structural (AST) code search and rewrite (ast-grep)",
+      "usage": "sg run -p \"console.log($A)\" --lang js",
+      "risk": "read",
+      "check": "sg --version",
+      "tip": "add --rewrite only when you mean to edit files"
+    },
+    {
+      "name": "cbm",
+      "category": "code-search",
+      "purpose": "Codebase graph: architecture, symbol search, call traces (Codebase Memory)",
+      "usage": "cbm arch | cbm search <query> | cbm trace <func>",
+      "risk": "read",
+      "check": "cbm --help"
+    },
+    {
+      "name": "tokei",
+      "category": "code-search",
+      "purpose": "Lines of code by language",
+      "usage": "tokei [dir] --output json",
+      "risk": "read",
+      "check": "tokei --version"
+    },
+    {
+      "name": "code-check",
+      "category": "lint",
+      "purpose": "One command for Ruff + Oxlint + ast-grep + Pyright + tsc, JSON for agents",
+      "usage": "code-check [dir] --agent | --changed | --fix | --deep",
+      "risk": "read",
+      "check": "code-check --help",
+      "tip": "--fix edits files"
+    },
+    {
+      "name": "ruff",
+      "category": "lint",
+      "purpose": "Python linter/formatter",
+      "usage": "ruff check [path] --output-format json",
+      "risk": "read",
+      "check": "ruff --version",
+      "tip": "ruff check --fix edits files"
+    },
+    {
+      "name": "oxlint",
+      "category": "lint",
+      "purpose": "Fast JS/TS linter (npm global)",
+      "usage": "oxlint [path]",
+      "risk": "read",
+      "check": "oxlint --version"
+    },
+    {
+      "name": "biome",
+      "category": "lint",
+      "purpose": "JS/TS/JSON lint+format (npm global)",
+      "usage": "biome check [path]",
+      "risk": "read",
+      "check": "biome --version"
+    },
+    {
+      "name": "pyright",
+      "category": "lint",
+      "purpose": "Python type checker (npm global)",
+      "usage": "pyright [dir] --outputjson",
+      "risk": "read",
+      "check": "pyright --version"
+    },
+    {
+      "name": "shellcheck",
+      "category": "lint",
+      "purpose": "Shell script linter",
+      "usage": "shellcheck -f json script.sh",
+      "risk": "read",
+      "check": "shellcheck --version"
+    },
+    {
+      "name": "actionlint",
+      "category": "lint",
+      "purpose": "GitHub Actions workflow linter",
+      "usage": "actionlint [.github/workflows/*.yml]",
+      "risk": "read",
+      "check": "actionlint -version"
+    },
+    {
+      "name": "jq",
+      "category": "data",
+      "purpose": "Query/transform JSON",
+      "usage": "jq '.field' file.json",
+      "risk": "read",
+      "check": "jq --version"
+    },
+    {
+      "name": "yq",
+      "category": "data",
+      "purpose": "Query/edit YAML, JSON, TOML, XML",
+      "usage": "yq '.jobs | keys' ci.yml",
+      "risk": "read",
+      "check": "yq --version",
+      "tip": "-i edits in place"
+    },
+    {
+      "name": "duckdb",
+      "category": "data",
+      "purpose": "SQL over CSV/JSON/Parquet files, no server",
+      "usage": "duckdb -c \"select * from 'data.csv' limit 5\"",
+      "risk": "read",
+      "check": "duckdb --version"
+    },
+    {
+      "name": "difft",
+      "category": "code-search",
+      "purpose": "Syntax-aware structural diff (difftastic)",
+      "usage": "difft old.js new.js",
+      "risk": "read",
+      "check": "difft --version"
+    },
+    {
+      "name": "delta",
+      "category": "code-search",
+      "purpose": "Readable git diffs",
+      "usage": "git diff | delta",
+      "risk": "read",
+      "check": "delta --version"
+    },
+    {
+      "name": "hyperfine",
+      "category": "perf",
+      "purpose": "Benchmark commands (mean, min, max)",
+      "usage": "hyperfine \"cmd1\" \"cmd2\" --export-json out.json",
+      "risk": "read",
+      "check": "hyperfine --version"
+    },
+    {
+      "name": "just",
+      "category": "workflow",
+      "purpose": "Per-project task runner; run `just --list` to discover tasks",
+      "usage": "just --list | just <task>",
+      "risk": "write",
+      "check": "just --version"
+    },
+    {
+      "name": "uv",
+      "category": "runtime",
+      "purpose": "Python packages, venvs, scripts and tools",
+      "usage": "uv run script.py | uv tool install <pkg> | uv pip install <pkg>",
+      "risk": "write",
+      "check": "uv --version"
+    },
+    {
+      "name": "xh",
+      "category": "network",
+      "purpose": "HTTP client with readable JSON",
+      "usage": "xh get https://api.example.com/x",
+      "risk": "read",
+      "check": "xh --version"
+    },
+    {
+      "name": "7z",
+      "category": "files",
+      "purpose": "Create/extract archives",
+      "usage": "7z x file.zip -oOUT | 7z a out.7z dir",
+      "risk": "write",
+      "check": "7z",
+      "tip": "-o has NO space: -oOUT"
+    },
+    {
+      "name": "pandoc",
+      "category": "documents",
+      "purpose": "Convert Markdown/HTML/DOCX/EPUB/LaTeX",
+      "usage": "pandoc in.md -o out.docx",
+      "risk": "write",
+      "check": "pandoc --version",
+      "tip": "PDF output needs a separate PDF engine"
+    },
+    {
+      "name": "ffmpeg",
+      "category": "media",
+      "purpose": "Convert/trim/inspect audio and video",
+      "usage": "ffmpeg -i in.mov out.mp4 | ffprobe -v error -show_format -of json f.mp4",
+      "risk": "write",
+      "check": "ffmpeg -version"
+    },
+    {
+      "name": "magick",
+      "category": "media",
+      "purpose": "ImageMagick: resize/convert/inspect images",
+      "usage": "magick in.png -resize 50% out.webp | magick identify f.png",
+      "risk": "write",
+      "check": "magick -version",
+      "tip": ".cmd shim plus a Git Bash launcher"
+    },
+    {
+      "name": "tesseract",
+      "category": "media",
+      "purpose": "OCR from images (English + orientation data)",
+      "usage": "tesseract img.png stdout",
+      "risk": "read",
+      "check": "tesseract --version",
+      "tip": ".cmd shim plus a Git Bash launcher; engine in C:\tools\tesseract-bin, add languages in tesseract-bin\tessdata"
+    },
+    {
+      "name": "mmdc",
+      "category": "documents",
+      "purpose": "Render Mermaid diagrams to PNG/SVG",
+      "usage": "mmdc -i in.mmd -o out.png",
+      "risk": "write",
+      "check": "mmdc --version"
+    },
+    {
+      "name": "gitleaks",
+      "category": "security",
+      "purpose": "Find secrets in files and git history",
+      "usage": "gitleaks detect --no-banner --redact -v",
+      "risk": "read",
+      "check": "gitleaks version",
+      "tip": "always use --redact so findings do not print secrets"
+    },
+    {
+      "name": "osv-scanner",
+      "category": "security",
+      "purpose": "Known-vulnerability scan of dependency lockfiles",
+      "usage": "osv-scanner scan source -L package-lock.json",
+      "risk": "read",
+      "check": "osv-scanner --version"
+    },
+    {
+      "name": "trivy",
+      "category": "security",
+      "purpose": "Scan filesystems, containers and IaC for vulnerabilities, secrets, misconfigurations",
+      "usage": "trivy fs --scanners vuln,secret,misconfig .",
+      "risk": "read",
+      "check": "trivy --version"
+    },
+    {
+      "name": "semgrep",
+      "category": "security",
+      "purpose": "Static security analysis (uv tool, ~/.local/bin)",
+      "usage": "semgrep --metrics=off --config <rules> <path>",
+      "risk": "read",
+      "check": "semgrep --version",
+      "tip": "set PYTHONUTF8=1 on Windows; always --metrics=off"
+    },
+    {
+      "name": "snyk",
+      "category": "security",
+      "purpose": "Dependency/code vulnerability scanning (npm global, needs login)",
+      "usage": "snyk test",
+      "risk": "read",
+      "check": "snyk --version"
+    },
+    {
+      "name": "agent-browser",
+      "category": "browser",
+      "purpose": "Low-token browser automation with @ref snapshots (npm global)",
+      "usage": "agent-browser open <url> | agent-browser snapshot -i | agent-browser click @ref",
+      "risk": "write",
+      "check": "agent-browser --version"
+    },
+    {
+      "name": "playwright-cli",
+      "category": "browser",
+      "purpose": "E2E tests, codegen, multi-browser",
+      "usage": "playwright-cli test | playwright-cli codegen",
+      "risk": "write",
+      "check": "playwright-cli --version"
+    },
+    {
+      "name": "es",
+      "category": "search",
+      "purpose": "Instant file search across all drives via Everything (needs Everything running)",
+      "usage": "es \"filename\" | es-mini \"filename\"",
+      "risk": "read",
+      "check": "es -version",
+      "tip": "Everything.exe must be running; it starts at sign-in"
+    },
+    {
+      "name": "dust",
+      "category": "disk",
+      "purpose": "Directory size tree",
+      "usage": "dust -d 2 [dir]",
+      "risk": "read",
+      "check": "dust --version"
+    },
+    {
+      "name": "diskmax",
+      "category": "disk",
+      "purpose": "Disk usage analyzer (GUI variant: diskmax-gui)",
+      "usage": "diskmax [path]",
+      "risk": "read"
+    },
+    {
+      "name": "pc-check",
+      "category": "pc-health",
+      "purpose": "Read-only PC health report: disks, SSD, Defender, battery, power plan, uptime, RAM, startup apps",
+      "usage": "pc-check",
+      "risk": "read",
+      "check": "pc-check",
+      "tip": "run this first for any 'is my PC ok / slow / low on space' question"
+    },
+    {
+      "name": "pc-care",
+      "category": "pc-health",
+      "purpose": "Weekly upkeep: deletes %TEMP% files older than 7 days, prunes uv cache, health check, notifies only on problems",
+      "usage": "pc-care [-Check] [-Quiet] [-Full]",
+      "risk": "destructive",
+      "tip": "-Check makes it read-only; log in C:\\tools\\_logs\\pc-health.txt"
+    },
+    {
+      "name": "pc-10.ps1",
+      "category": "pc-health",
+      "purpose": "One-time hardening (Defender PUA/network protection, SSD trim, update scan, weekly task, BitLocker/Secure Boot report)",
+      "usage": "powershell -ExecutionPolicy Bypass -File C:\\tools\\pc-10.ps1 [-DryRun]",
+      "risk": "admin",
+      "tip": "needs UAC approval from the user; do not run unattended"
+    },
+    {
+      "name": "toolbox",
+      "category": "pc-health",
+      "purpose": "PC diagnostics suite (/status /boost /clean /diagnose /security /unlock)",
+      "usage": "toolbox Status -Compact",
+      "risk": "write",
+      "check": "toolbox Status -Compact",
+      "tip": "prefer pc-check for read-only status"
+    },
+    {
+      "name": "autorunsc64",
+      "category": "pc-health",
+      "purpose": "List everything that starts with Windows (Sysinternals)",
+      "usage": "autorunsc64.exe -a * -c",
+      "risk": "read",
+      "tip": "needs admin for a full list"
+    },
+    {
+      "name": "fastfetch",
+      "category": "pc-health",
+      "purpose": "Hardware/OS summary",
+      "usage": "fastfetch",
+      "risk": "read",
+      "check": "fastfetch --version"
+    },
+    {
+      "name": "btop",
+      "category": "pc-health",
+      "purpose": "Live process/CPU/RAM monitor (interactive TUI)",
+      "usage": "btop",
+      "risk": "read",
+      "tip": "interactive: not for non-interactive agents; use pc-check"
+    },
+    {
+      "name": "bleachbit",
+      "category": "pc-health",
+      "purpose": "Privacy/junk cleaner (portable BleachBit)",
+      "usage": "bleachbit --list | --preview <cleaner> | --clean <cleaner>",
+      "risk": "destructive",
+      "tip": "portable copy; always --preview first and ask before --clean",
+      "check": "bleachbit --version"
+    },
+    {
+      "name": "9r",
+      "category": "9router",
+      "purpose": "9Router AI gateway control (port 20127): start, stop, status, restart, open, quota, usage, accounts, test, health, models, update",
+      "usage": "9r status | 9r | 9r restart | 9r accounts | 9r models",
+      "risk": "write",
+      "check": "9r status",
+      "tip": "bare `9r` starts it; starts at sign-in via Startup\\9router.vbs"
+    },
+    {
+      "name": "agy-check",
+      "category": "antigravity",
+      "purpose": "Antigravity health/disk audit (agy-* family: brain, clean, doctor, find-temp, launch, restart, update)",
+      "usage": "agy-check | agy-find-temp (dry run)",
+      "risk": "read",
+      "tip": "agy-clean* delete files: dry-run with agy-find-temp first"
+    },
+    {
+      "name": "auto-accept",
+      "category": "antigravity",
+      "purpose": "Auto-approves Antigravity/Claude/Kiro confirmation prompts (antigravity-auto-submit project)",
+      "usage": "auto-accept --status | auto-accept doctor",
+      "risk": "write",
+      "check": "auto-accept --help"
+    },
+    {
+      "name": "codex",
+      "category": "ai-cli",
+      "purpose": "OpenAI Codex CLI",
+      "usage": "codex <args>",
+      "risk": "write",
+      "check": "codex --version"
+    },
+    {
+      "name": "cs",
+      "category": "ai-cli",
+      "purpose": "Codex account switcher (codex-switch)",
+      "usage": "cs list | cs current | cs <n>",
+      "risk": "write"
+    },
+    {
+      "name": "tg-backup",
+      "category": "backup",
+      "purpose": "Telegram Drive archive: stats, ls, search, find, duplicates, backup, status, doctor",
+      "usage": "tg-backup stats | tg-backup search \"term\"",
+      "risk": "write",
+      "tip": "backup uploads files: confirm paths with the user"
+    },
+    {
+      "name": "git",
+      "category": "vcs",
+      "purpose": "Version control (also gh for GitHub, lazygit TUI)",
+      "usage": "git status -sb | gh pr list",
+      "risk": "write",
+      "check": "git --version"
+    },
+    {
+      "name": "docker",
+      "category": "runtime",
+      "purpose": "Containers",
+      "usage": "docker ps | docker build -t name .",
+      "risk": "write",
+      "check": "docker --version"
+    },
+    {
+      "name": "python",
+      "category": "runtime",
+      "purpose": "Python 3.12 (also py, pip)",
+      "usage": "python script.py | uv run script.py",
+      "risk": "write",
+      "check": "python --version"
+    },
+    {
+      "name": "node",
+      "category": "runtime",
+      "purpose": "Node.js 24 with npm, pnpm, yarn, bun",
+      "usage": "node script.js | npm run <script>",
+      "risk": "write",
+      "check": "node --version"
+    },
+    {
+      "name": "bun",
+      "category": "runtime",
+      "purpose": "Fast JavaScript runtime, bundler and package manager",
+      "usage": "bun run script.ts | bun install",
+      "risk": "write",
+      "check": "bun --version"
+    },
+    {
+      "name": "skillmap",
+      "category": "agents",
+      "purpose": "Read-only inventory of skills, rules, commands, MCP servers and CLI tools per coding agent, with token cost",
+      "usage": "skillmap [summary|list|where <name>|matrix|formats|check|tools|export]",
+      "risk": "read",
+      "check": "skillmap --version"
+    },
+    {
+      "name": "sigcheck64",
+      "category": "security",
+      "purpose": "Verify digital signatures and scan files against VirusTotal (Sysinternals)",
+      "usage": "sigcheck64 -nobanner -vt -u <file>",
+      "risk": "read",
+      "check": "sigcheck64.exe -nobanner C:\\\\tools\\\\autorunsc64.exe",
+      "tip": "Use -vt to check against 70+ antivirus engines on VirusTotal"
+    },
+    {
+      "name": "czkawka",
+      "category": "disk",
+      "purpose": "Ultra-fast duplicate file finder and disk cleaner (Rust)",
+      "usage": "czkawka dup -d <dir> -f results.txt",
+      "risk": "read",
+      "check": "czkawka --version",
+      "tip": "Use czkawka dup, empty-folders, or big to scan for disk bloat"
+    },
+    {
+      "name": "wsl-compact",
+      "category": "disk",
+      "purpose": "Safely compacts WSL2 & Docker VHDX virtual hard disks",
+      "usage": "wsl-compact [-All] [-Docker]",
+      "risk": "write",
+      "check": "wsl -l -v",
+      "tip": "Recovers gigabytes of SSD space from expanded ext4.vhdx disks"
+    },
+    {
+      "name": "clean-temp",
+      "category": "disk",
+      "purpose": "Safely purges stale temporary files without touching locked files",
+      "usage": "clean-temp [-IncludeWindowsTemp]",
+      "risk": "destructive",
+      "check": "cmd /c echo ok",
+      "tip": "Skips active files in use; instantly frees gigabytes in %TEMP%"
+    },
+    {
+      "name": "9ai",
+      "category": "agents",
+      "purpose": "Ask your 9Router terminal AI from any command prompt",
+      "usage": "9ai \"question\"",
+      "risk": "read",
+      "check": "cmd /c echo ok"
+    },
+    {
+      "name": "sigcheck",
+      "category": "security",
+      "purpose": "Verify file signatures and VirusTotal status (Sysinternals)",
+      "usage": "sigcheck -nobanner -vt -u <file>",
+      "risk": "read",
+      "check": "sigcheck64.exe -nobanner C:\\\\tools\\\\autorunsc64.exe"
+    },
+    {
+      "name": "czkawka-cli",
+      "category": "disk",
+      "purpose": "Ultra-fast duplicate file finder and disk cleaner CLI",
+      "usage": "czkawka-cli dup -d <dir>",
+      "risk": "read",
+      "check": "czkawka-cli --version"
+    }
+  ]
+}

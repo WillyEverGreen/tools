@@ -1,0 +1,6 @@
+id: no-subprocess-shell
+message: Avoid executing subprocess with shell=True due to command injection risks
+severity: error
+language: python
+rule:
+  pattern: subprocess.$METHOD($$$, shell=True, $$$)

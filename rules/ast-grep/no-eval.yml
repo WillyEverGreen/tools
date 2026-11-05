@@ -1,0 +1,6 @@
+id: no-eval
+message: Avoid dangerous dynamic code execution with eval()
+severity: error
+language: javascript
+rule:
+  pattern: eval($$$)
