@@ -26,7 +26,7 @@ Start-Process -FilePath $node -WorkingDirectory $app -WindowStyle Hidden `
 
 $bridgeScript = "d:\EXPERIMENTS PROJECTS\9router\scripts\proxy-20128.js"
 if (Test-Path $bridgeScript) {
-    Start-Process -FilePath $node -ArgumentList @($bridgeScript) -WindowStyle Hidden
+    Start-Process -FilePath $node -WorkingDirectory (Split-Path $bridgeScript) -ArgumentList @($bridgeScript) -WindowStyle Hidden
 }
 
 for ($i = 0; $i -lt 40; $i++) {
