@@ -403,6 +403,15 @@
       "check": "auto-accept --help"
     },
     {
+      "name": "ralph",
+      "category": "agent-loop",
+      "purpose": "Autonomous fresh-context PRD task loop with Gate 0 anti-cheat diff auditing",
+      "usage": "ralph run [tasks.md] | ralph status | ralph init",
+      "risk": "write",
+      "check": "ralph --version",
+      "tip": "Combines fresh context iteration with diff_audit Gate 0 verification"
+    },
+    {
       "name": "codex",
       "category": "ai-cli",
       "purpose": "OpenAI Codex CLI",
