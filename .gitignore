@@ -39,3 +39,8 @@ desktop.ini
 .idea/
 *.swp
 
+# Local legacy root shims (preserved on PC, hidden from Git root)
+/start-9router.ps1
+/everything-watchdog.ps1
+
+

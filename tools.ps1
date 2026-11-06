@@ -13,6 +13,10 @@
 #>
 param([Parameter(Position = 0)][string]$Cmd = 'list', [Parameter(Position = 1)][string]$Arg = '', [switch]$Json, [switch]$Fix, [switch]$Latest)
 
+if ($env:Path -split ';' -notcontains 'C:\tools\bin') {
+    $env:Path = "$env:Path;C:\tools\bin"
+}
+
 $manifest = Get-Content 'C:\tools\tools.json' -Raw | ConvertFrom-Json
 $all = @($manifest.tools)
 
