@@ -1,28 +1,35 @@
 # 9router-supervisor.ps1
-# High-reliability process supervisor for 9Router daemon & local proxy bridge.
-# Checks process existence & active HTTP health every 3 seconds.
-# Restarts dead or unresponsive instances within 3 seconds.
+# Continuous High-Reliability Process Supervisor for 9Router daemon & proxy bridge
+$ErrorActionPreference = "SilentlyContinue"
 
-param(
-    [int]$Port = 20127,
-    [int]$BridgePort = 20128
-)
+# Single-Instance Guard
+$myPid = $PID
+$supPattern = '-File\s+["'']?[^"'']*9router-supervisor\.ps1'
+$existing = Get-CimInstance Win32_Process -Filter "Name = 'powershell.exe'" | Where-Object { 
+    $_.ProcessId -ne $myPid -and $_.CommandLine -match $supPattern 
+}
+if ($existing) {
+    Exit
+}
 
-$ErrorActionPreference = 'SilentlyContinue'
-
-$node = 'C:\Program Files\nodejs\node.exe'
+$port = 20127
+$bridgePort = 20128
+$node = if (Test-Path 'C:\Program Files\nodejs\node.exe') { 'C:\Program Files\nodejs\node.exe' } else { (Get-Command node.exe -ErrorAction SilentlyContinue).Source }
 $pkg  = Join-Path $env:APPDATA 'npm\node_modules\9router'
 $app  = Join-Path $pkg 'app'
 $server = if (Test-Path (Join-Path $app 'custom-server.js')) { Join-Path $app 'custom-server.js' } else { Join-Path $app 'server.js' }
-$bridgeScript = "d:\EXPERIMENTS PROJECTS\9router\scripts\proxy-20128.js"
+$bridgeScript = Join-Path $PSScriptRoot "proxy-20128.js"
+if (-not (Test-Path $bridgeScript)) {
+    $bridgeScript = "d:\EXPERIMENTS PROJECTS\9router\scripts\proxy-20128.js"
+}
 
 if (-not (Test-Path $server)) {
-    exit 1
+    Exit
 }
 
 $runtimeNm = Join-Path $env:APPDATA '9router\runtime\node_modules'
 $env:NODE_PATH = (@($runtimeNm, (Join-Path $app 'node_modules'), $env:NODE_PATH) | Where-Object { $_ }) -join ';'
-$env:PORT = "$Port"
+$env:PORT = "$port"
 $env:HOSTNAME = '0.0.0.0'
 
 function Start-ServerProcess {
@@ -46,46 +53,46 @@ $consecutiveFailures = 0
 $lastStartTime = [DateTime]::MinValue
 
 while ($true) {
-    # 1. Server process check
-    $serverRunning = $false
-    if ($serverProc -and -not $serverProc.HasExited) {
-        $serverRunning = $true
-    } else {
-        $conn = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($conn -and $conn.OwningProcess -gt 0) {
-            $serverProc = Get-Process -Id $conn.OwningProcess -ErrorAction SilentlyContinue
-            $serverRunning = ($serverProc -ne $null -and -not $serverProc.HasExited)
+    try {
+        # 1. Server process check
+        $serverRunning = $false
+        if ($serverProc -and -not $serverProc.HasExited) {
+            $serverRunning = $true
+        } else {
+            $conn = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($conn -and $conn.OwningProcess -gt 0) {
+                $serverProc = Get-Process -Id $conn.OwningProcess -ErrorAction SilentlyContinue
+                $serverRunning = ($serverProc -ne $null -and -not $serverProc.HasExited)
+            }
         }
-    }
 
-    if (-not $serverRunning) {
-        $serverProc = Start-ServerProcess
-        $lastStartTime = [DateTime]::UtcNow
-        $consecutiveFailures = 0
-        Start-Sleep -Seconds 2
-    }
-
-    # 2. Bridge process check
-    $bridgeRunning = $false
-    if ($bridgeProc -and -not $bridgeProc.HasExited) {
-        $bridgeRunning = $true
-    } else {
-        $bConn = Get-NetTCPConnection -LocalPort $BridgePort -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($bConn -and $bConn.OwningProcess -gt 0) {
-            $bridgeProc = Get-Process -Id $bConn.OwningProcess -ErrorAction SilentlyContinue
-            $bridgeRunning = ($bridgeProc -ne $null -and -not $bridgeProc.HasExited)
+        if (-not $serverRunning) {
+            $serverProc = Start-ServerProcess
+            $lastStartTime = [DateTime]::UtcNow
+            $consecutiveFailures = 0
+            Start-Sleep -Seconds 2
         }
-    }
 
-    if (-not $bridgeRunning) {
-        $bridgeProc = Start-BridgeProcess
-    }
+        # 2. Bridge process check
+        $bridgeRunning = $false
+        if ($bridgeProc -and -not $bridgeProc.HasExited) {
+            $bridgeRunning = $true
+        } else {
+            $bConn = Get-NetTCPConnection -LocalPort $bridgePort -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($bConn -and $bConn.OwningProcess -gt 0) {
+                $bridgeProc = Get-Process -Id $bConn.OwningProcess -ErrorAction SilentlyContinue
+                $bridgeRunning = ($bridgeProc -ne $null -and -not $bridgeProc.HasExited)
+            }
+        }
 
-    # 3. HTTP health probe (allow 15s warm-up; recycle only after 3 consecutive deadlocks)
-    $elapsedWarmup = ([DateTime]::UtcNow - $lastStartTime).TotalSeconds
-    if ($elapsedWarmup -gt 15) {
-        try {
-            $resp = curl.exe -s --max-time 3 "http://127.0.0.1:$Port/api/health"
+        if (-not $bridgeRunning) {
+            $bridgeProc = Start-BridgeProcess
+        }
+
+        # 3. HTTP health probe (allow 15s warm-up; recycle only after 3 consecutive deadlocks)
+        $elapsedWarmup = ([DateTime]::UtcNow - $lastStartTime).TotalSeconds
+        if ($elapsedWarmup -gt 15) {
+            $resp = curl.exe -s --max-time 3 "http://127.0.0.1:$port/api/health"
             if ($resp -match 'ok') {
                 $consecutiveFailures = 0
             } else {
@@ -97,9 +104,9 @@ while ($true) {
                     $consecutiveFailures = 0
                 }
             }
-        } catch {
-            $consecutiveFailures++
         }
+    } catch {
+        # Keep loop alive under all circumstances
     }
 
     Start-Sleep -Seconds 3
