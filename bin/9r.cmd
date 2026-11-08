@@ -59,7 +59,7 @@ if /i "%ACTION%"=="models" (
 
 if /i "%ACTION%"=="restart" (
     call "%~dp0stop-9router.cmd"
-    timeout /t 1 /nobreak >nul
+    ping 127.0.0.1 -n 2 >nul
     call "%~dp0start-9router.cmd"
     exit /b %errorlevel%
 )

@@ -1,0 +1,13 @@
+{
+  "profile": "C:\\Users\\advdi",
+  "appDir": "C:\\Users\\advdi\\AppData\\Roaming\\npm\\node_modules\\9router\\app",
+  "nodePath": "C:\\Program Files\\nodejs\\node.exe",
+  "port": 20127,
+  "bridgePort": 20128,
+  "host": "0.0.0.0",
+  "maxOldSpaceMb": 1024,
+  "healthIntervalMs": 60000,
+  "healthTimeoutMs": 5000,
+  "maxHealthFailures": 3,
+  "logMaxBytes": 5242880
+}

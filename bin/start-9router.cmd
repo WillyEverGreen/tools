@@ -1,3 +1,3 @@
 @echo off
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0..\scripts\start-9router.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\tools\9router\9r-ctl.ps1" start
 exit /b %errorlevel%

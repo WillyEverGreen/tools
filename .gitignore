@@ -43,4 +43,10 @@ desktop.ini
 /start-9router.ps1
 /everything-watchdog.ps1
 
+# 9Router runtime state
+9router/logs/
+9router/*.lock
+9router/*.flag
+
+
 

@@ -1,2 +1,4 @@
 @echo off
-powershell.exe -NoProfile -Command "Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command \"cmd.exe /c stop-9router; cmd.exe /c start-9router\"' -Verb RunAs"
+rem Re-register the 9Router task elevated, which upgrades it to boot-start (S4U).
+powershell.exe -NoProfile -Command "Start-Process -FilePath 'C:\tools\9router\register-boot-task.cmd' -Verb RunAs"
+exit /b %errorlevel%
