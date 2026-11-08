@@ -541,6 +541,19 @@ function startControl() {
       setTimeout(() => shutdown(`control stop (exit ${code})`, Number.isFinite(code) ? code : 0), 50);
       return;
     }
+    if (req.method === "POST" && url.pathname === "/kill-child") {
+      if (child && child.exitCode === null) {
+        const oldPid = child.pid;
+        log(`control channel received /kill-child, sending SIGKILL to child PID ${oldPid}`);
+        child.kill("SIGKILL");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ ok: true, killed: oldPid }));
+      } else {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ ok: false, error: "no child running" }));
+      }
+      return;
+    }
     res.writeHead(404, { "Content-Type": "text/plain" });
     res.end("not found\n");
   });
