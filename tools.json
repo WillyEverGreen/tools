@@ -380,8 +380,8 @@
     {
       "name": "9r",
       "category": "9router",
-      "purpose": "9Router AI gateway control (port 20127): start, stop, status, restart, open, quota, usage, accounts, test, health, models, update",
-      "usage": "9r status | 9r | 9r restart | 9r accounts | 9r models",
+      "purpose": "9Router AI gateway control (port 20127): start, stop, status, restart, open, quota, usage, accounts, test, health, verify, zed-models, 9ai, models, update",
+      "usage": "9r status | 9r | 9r restart | 9r accounts | 9r verify --freebuff --roundtrip | 9r zed-models | 9r 9ai --status",
       "risk": "write",
       "check": "9r status",
       "tip": "bare `9r` starts it; starts at sign-in via Startup\\9router.vbs"

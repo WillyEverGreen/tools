@@ -2,7 +2,7 @@
   pc-10.ps1 - one-time setup that takes this PC to its best sustainable state.
   Run it yourself; it asks for admin rights (UAC) and changes nothing outside the list below.
 
-    1. Turns on the weekly upkeep task        (runs C:\tools\pc-care.ps1 every Sunday 13:00, or at next start)
+    1. Turns on the weekly upkeep task        (runs C:\tools\scripts\pc-care.ps1 every Sunday 13:00, or at next start)
     2. Clears old temp files                  (user Temp and C:\Windows\Temp, files older than 7 days)
     3. Hardens Windows Defender               (blocks potentially unwanted apps, network protection, fresh signatures)
     4. Trims the SSD                          (Optimize-Volume -ReTrim, safe and built in)
@@ -48,13 +48,13 @@ $freeBefore = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSp
 
 # ---------- 1. weekly upkeep ----------
 Step '1. Weekly upkeep task' {
-  if (-not (Test-Path 'C:\tools\pc-care.ps1')) { throw 'C:\tools\pc-care.ps1 is missing' }
+  if (-not (Test-Path 'C:\tools\scripts\pc-care.ps1')) { throw 'C:\tools\scripts\pc-care.ps1 is missing' }
   $user = (Get-CimInstance Win32_ComputerSystem).UserName
-  $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\tools\pc-care.ps1"'
+  $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\tools\scripts\pc-care.ps1"'
   $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 1pm
   $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1)
   $principal = New-ScheduledTaskPrincipal -UserId $user -LogonType Interactive -RunLevel Limited
-  Register-ScheduledTask -TaskName 'PC-Care Weekly' -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description 'Weekly temp cleanup and health check (C:\tools\pc-care.ps1)' -Force | Out-Null
+  Register-ScheduledTask -TaskName 'PC-Care Weekly' -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description 'Weekly temp cleanup and health check (C:\tools\scripts\pc-care.ps1)' -Force | Out-Null
   Write-Host "   registered for $user, next run: $((Get-ScheduledTask 'PC-Care Weekly' | Get-ScheduledTaskInfo).NextRunTime)"
 }
 
@@ -126,7 +126,7 @@ Step '7. Battery report' {
 
 # ---------- 8. health check ----------
 Step '8. Health check' {
-  & 'C:\tools\pc-care.ps1' -Check -Quiet
+  & 'C:\tools\scripts\pc-care.ps1' -Check -Quiet
 }
 
 $freeAfter = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace

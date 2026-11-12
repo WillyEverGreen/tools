@@ -1,4 +1,4 @@
-﻿# 9r-ctl.ps1 — control the 9Router keep-alive stack (scheduled task "9Router").
+# 9r-ctl.ps1 — control the 9Router keep-alive stack (scheduled task "9Router").
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\tools\9router\9r-ctl.ps1 status|start|stop|restart
 #

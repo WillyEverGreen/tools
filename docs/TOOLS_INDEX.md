@@ -161,7 +161,7 @@ Open a new terminal after PATH changes. These tools use no resources when idle; 
 | Tool | Location | Purpose | Command / Usage |
 | :--- | :--- | :--- | :--- |
 | **`trivy`** 0.76.1 | `C:\tools\trivy.exe` | Scan container images, filesystems, IaC and dependencies for vulnerabilities, secrets and misconfigurations | `trivy fs --scanners vuln,secret,misconfig .`<br>`trivy image <name>` |
-| **`pc-care`** | `C:\tools\pc-care.ps1` / `pc-care.cmd` | Weekly upkeep and health watch: deletes %TEMP% files older than 7 days, prunes uv cache, checks disk space, SSD health, Defender, firewall, battery wear, pending reboot, startup creep, update age, power plan. Writes `C:\tools\_logs\pc-health.txt`/`.json` and notifies only when something needs attention. | `pc-care -Check -Quiet` (health only)<br>`pc-care` (cleanup + health) |
+| **`pc-care`** | `C:\tools\scripts\pc-care.ps1` / `pc-care.cmd` | Weekly upkeep and health watch: deletes %TEMP% files older than 7 days, prunes uv cache, checks disk space, SSD health, Defender, firewall, battery wear, pending reboot, startup creep, update age, power plan. Writes `C:\tools\_logs\pc-health.txt`/`.json` and notifies only when something needs attention. | `pc-care -Check -Quiet` (health only)<br>`pc-care` (cleanup + health) |
 
 PC state changes made 2026-10-28 (snapshot for undo in `C:\tools\_backup\pc-snapshot-2026-10-28`): power plan High performance -> Balanced; startup disabled (reversible in Task Manager > Startup apps): Opera Browser Assistant, Chrome auto-launch, Send to OneNote.
 
