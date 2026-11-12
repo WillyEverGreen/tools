@@ -331,7 +331,7 @@
       "name": "pc-10.ps1",
       "category": "pc-health",
       "purpose": "One-time hardening (Defender PUA/network protection, SSD trim, update scan, weekly task, BitLocker/Secure Boot report)",
-      "usage": "powershell -ExecutionPolicy Bypass -File C:\\tools\\pc-10.ps1 [-DryRun]",
+      "usage": "powershell -ExecutionPolicy Bypass -File C:\\tools\\scripts\\pc-10.ps1 [-DryRun]",
       "risk": "admin",
       "tip": "needs UAC approval from the user; do not run unattended"
     },

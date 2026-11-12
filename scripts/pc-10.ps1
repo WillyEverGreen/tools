@@ -11,7 +11,7 @@
     7. Saves a battery report and health      (C:\tools\_logs\battery-report.html)
     8. Runs the health check and shows the result
 
-  Usage:   powershell -ExecutionPolicy Bypass -File C:\tools\pc-10.ps1
+  Usage:   powershell -ExecutionPolicy Bypass -File C:\tools\scripts\pc-10.ps1
            add -DryRun to see what it would do without changing anything
   Undo:    Unregister-ScheduledTask -TaskName 'PC-Care Weekly' -Confirm:$false
            Set-MpPreference -PUAProtection Disabled        (only if a wanted app gets blocked)
